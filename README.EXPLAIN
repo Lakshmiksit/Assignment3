@@ -1,0 +1,62 @@
+README 
+----------------------------
+
+
+WE HAVE DESIGNED TRANSMITTING MESSAGES USING UDP SOCKETS
+ALSO WE DESIGNED TRANSMITTING MESSAGES USING PING
+
+Implement QoS for 3CX VoIP on Debian Linux
+----------------------------------------------------------------------------
+
+Step 1: Making sure your QoS rules are applied permanently to your system
+
+By default, 
+your Debian Linux system will NOT save any rules applied at runtime. 
+This can however be resolved by adding the iptables-persistent package to your installation as follows:
+
+  
+
+  apt-get install iptables-persistent
+
+Step 2: Create a Rule to Tag All Traffic Originating From This Machine
+
+Run
+ the following commands at the command prompt:
+
+
+  
+ iptables -t mangle -A OUTPUT -p udp -j DSCP –set-dscp 56
+
+ 
+  
+ iptables -t mangle -A OUTPUT -p tcp -j DSCP –set-dscp 56
+
+Step 3: Checking QoS is Applied to Outbound Traffic
+
+Use
+
+ tcpdump to create a network capture file for you to examine using Wireshark on some other computer:
+
+ 
+
+
+Step 4: Make Sure the Changes are Saved Permanently
+
+Run the following commands at the command prompt:
+
+
+
+    iptables-save >/etc/iptables/rules.v4
+
+   tcpdump -s 0 -w 247-check-dscp.pcap
+
+
+CHALLENGES FACED
+-------------------------------------
+It was difficult to implement the program in the limited time.
+It was tough to implement QoS
+
+REFERENCES
+------------------------
+-https://www.3cx.com/blog/voip-howto/qos-linux/
+-https://gist.github.com/madan712/4509039
